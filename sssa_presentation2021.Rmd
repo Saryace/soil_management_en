@@ -1,7 +1,7 @@
 ---
 title: "Soil Data Management at Laboratory Scale Focused on Soil Physical Measurements"
 subtitle: "ASA, CSSA, SSSA International Annual Meeting 2021"
-author: "Sara Acevedo"
+author: "Sara Acevedo, Javier Rivera, Edouard Acuña, Cristina Contreras, Carolina Giraldo, Sofia Martinex, Carlos Avila, Carlos Bonilla"
 date: "November 2021"
 output:
  xaringan::moon_reader:
