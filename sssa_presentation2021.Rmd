@@ -65,6 +65,19 @@ leaflet() %>%
 ```
 ---
 
+
+##Acknowledgments
+.pull-left[
+
+This research was supported by funding from the National Commission for Scientific and Technological Research FONDECYT/Regular 1191166
+
+]
+
+.pull-right[
+![anid](img/anid_rojo_azul.png)
+
+]
+---
 background-image: url('img/program3.png')
 background-size: cover
 class: middle, center, inverse
@@ -125,14 +138,15 @@ class: middle
 ]
 
 .pull-right[
+![hyprop](img/hyprop.jpeg)
 ]
 
 ---
 
-#This presentation will cover:
+###This presentation will cover:
 
-##Good practices for laboratory-derived soil datasets
-##A demo example of how these practices improve reproducibility 
+#### * Good practices for laboratory-derived soil datasets
+#### * A demo example of how these practices improve reproducibility 
 
 ---
 
@@ -143,135 +157,57 @@ class: inverse, middle, center
 # **Material and methods**
 
 ---
-class: center
 
-## Example 1: soil water retention curves
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=5}
-
-```
----
-
-class: center
-
-## Example 2: soil particle size distribution
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=5}
-
-```
----
-```{r}
-
-
-```
-
----
-
-class: center
-
-## *agua disponible para las plantas*
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=5}
-library(tidyverse)
-water_content <- tribble(
-  ~id, ~drainable, ~plant_aw,  ~unavailable,~solid_fraction,
-  "SueloA", 0.20, 0.13, 0.14, 0.53,
-  "SueloB", 0.15, 0.15, 0.13, 0.57,
-  "SueloC", 0.14, 0.17, 0.14, 0.53)
-water_long <- water_content %>% pivot_longer(drainable:solid_fraction, names_to = "volumetric_value") %>%
-                                mutate(volumetric_value = fct_relevel(volumetric_value, c("drainable",
-                                                                                          "plant_aw",
-                                                                                          "unavailable",
-                                                                                          "solid_fraction")))
-ggplot(water_long, aes(fill = volumetric_value,
-                        y = as.numeric(value),
-                        label = value,
-                        x = id)) +
-  geom_bar(position="fill", stat="identity", width=0.80, alpha=0.8) +
-  coord_flip() +
-  scale_fill_manual(labels=c("Porosidad\ndrenable","Agua disponible\npara las plantas","Agua no\ndisponible","Fracción sólida"),
-                    values=c("dodgerblue","palegreen3","slategray3","saddlebrown"))+
-  geom_label(position = position_fill(vjust = .5), color = "#FFFFFF",show_guide  = F) +
-  ggtitle("Contenidos volumétricos de suelo y agua") +
-  ylim(x=c(0,1)) +
-  labs(x="", y="") +
-  theme(axis.line = element_line(size=1, colour = "black"),
-        panel.grid.major = element_line(colour = "#d3d3d3"),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
-        text=element_text(family="Tahoma"),
-        panel.background = element_blank(),
-        legend.position="bottom",
-        legend.title = element_blank())+
-  theme(plot.margin=unit(c(3,2,3,2),"cm"))
-```
-
----
-
-class: center
-
-## *estructura del suelo* y *tamaño de poros*
-
-```{r,echo=FALSE,results='hide',warning=FALSE,message=FALSE,fig.retina=5}
-library(soilphysics)
-library(tidyverse)
-theme_set(theme_bw())
-x <- seq(log10(1),log10(15000),len=100)
-h <- 10^x
-y1<- psd(thetaS = 0.7, thetaR = 0.005,
-        alpha = 0.021,n= 1.5, h = h)
-y2<- psd(thetaS = 0.3, thetaR = 0.01,
-         alpha = 0.066,n= 6, h = h)
-psd <- tibble(x = x, Soil1= y1, Soil2=y2)
-psd_plot <- psd %>% pivot_longer(Soil1:Soil2, names_to = "psd")
-ggplot(psd_plot,aes(x = x, y = value, pch=psd)) +
-  geom_line(aes(linetype=psd), size=2) +
-  labs(y=expression(delta*contenido.humedad/delta*succión),
-       x= "Radio de poro equivalente"~(mu*m)) +
-  annotate("text", x = 2.2, y = 0.0205, label = "Suelo fino (fine)") +
-  annotate("segment", x = 1.7, y = 0.0205,
-           xend = 1.4, yend = 0.021,
-           arrow = arrow(angle = 20, length = unit(2, "mm"), type = "closed")) +
-  annotate("text", x = 2.2, y = 0.0055, label = "Suelo grueso (coarsed)") +
-  annotate("segment", x = 1.7, y = 0.005,
-           xend = 1.6, yend = 0.004,
-           arrow = arrow(angle = 20, length = unit(2, "mm"), type = "closed")) +
-  ggtitle('Distribución de tamaño\nde poros derivada de curvas de retención de humedad') +
-  theme(legend.position = "none")+
-  theme(plot.margin=unit(c(3,2,3,2),"cm"))
-```
----
+## Soil water retention curves
 .pull-left[
-### ¿Qué es lo que queremos?
-.x[
-* curvas de retención de humedad de alta calidad
-* poco tiempo 
-* datos confiables
+* Simplified evaporation method + dewpoint potentiometer
+* High resolution soil water retention curves
+* Twelve undisturbed soil cores from the top horizon
 ]
-]
+
 .pull-right[
-### ¿Qué es lo que tenemos?
-.checked[
-* Tiempo limitado en laboratorio (pandemia)
-* Terrenos agotadores
-* Incertidumbre en los datos
+<iframe width="380" height="260" align="right" src="https://www.youtube.com/embed/MdnSEf07Vz8?t=110" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ]
+
+---
+## Soil particle size distribution
+.pull-left[
+* Sedimentation method
+* Semi-continuous particle size distribution curve
+* Twelve soil sieved samples, pre-treated with H<sub>2</sub>O<sub>2</sub>
+* Twelve soil sieved samples, no pre-treated 
+]
+
+.pull-right[
+![pario](img/pario.png)
 ]
 
 ---
 
-## ¿Es posible estimar<br>estas curvas de retención de humedad?
+## Data recording and analysis
+.pull-left[
+* Windows-based software from the manufacturer
+* Export formats: .xlsx and/or .csv
+* Data stored in a cloud service
+* Data analysis: R
+]
+
+.pull-right[
+![program](img/program.png)
+]
+---
+
+## Good practices:
 
 ---
 
-## ¿Es posible estimar<br>estas curvas de retención de humedad?
+## Good practices:
 
 ----
 
 .left-col[.center[
-`r icons::icon_style(icons::fontawesome("car-side"), scale = 1.5)`
-### con levantamiento de datos en terreno
+`r icons::icon_style(icons::fontawesome("universal-access"), scale = 1.5)`
+### keep data human-and-machine readable
 ]]
 
 --
@@ -279,202 +215,116 @@ ggplot(psd_plot,aes(x = x, y = value, pch=psd)) +
 .center-col[
 .center[
 `r icons::icon_style(icons::fontawesome("chart-bar"), scale = 1.5)`
-### con análisis de laboratorio 
+### use scripts and not touch raw data
 ]]
 
 --
 
 .right-col[.center[
 `r icons::icon_style(icons::fontawesome("r-project"), scale = 1.5)`
-### con desarrollo de modelos predictivos
+### use data validation to avoid errors
 ]]
 
 ---
 
-background-image: url('img/img.jpeg')
+background-image: url('img/san_joaquin.jpeg')
 background-size: cover
 class: inverse, middle, center
 
-# **Terreno**
+# **Results and demo**
 
 ---
-class: inverse
-
-## Diversidad de suelos en un largo país
-```{r,out.width='100%', fig.height=5,echo=FALSE,warning=FALSE,message=FALSE}
-library(leaflet)
-library(tidyverse)
-data_sitios <- tribble(~lat,~lng,
-                         -33.56772,-71.15036,
-                         -34.61548,-71.04289,
-                         -36.08086,-71.66079,
-                         -33.43766,-70.81793,
-                         -34.83210,-70.97333,
-                         -50.96419,-72.86686,
-                         -34.54030,-70.97252,
-                         -35.51910,-72.26669,
-                         -36.99625,-73.13973,
-                         -51.02275,-72.98324,
-                         -33.64193,-70.77460,
-                         -51.02813,-73.02543,
-                         -50.97429	,-72.87528,
-                         -32.468018,-71.24934,
-                         -34.96855,-71.16662,
-                         -35.45329,-72.09532,
-                         -33.96341,-71.51518,
-                         -33.48246,-71.28006,
-                         -18.48412,-70.321991,
-                         -41.31810,-72.99322,
-                         -34.58270,-71.80640,
-                         -51.07182,-73.09376,
-                         -34.39007,-71.98833,
-                         -41.31784,-72.99256,
-                         -34.83043,-71.12582,
-                         -33.25507,-71.43482,
-                         -33.42350,-70.63670,
-                         -33.52797,-70.75530,
-                         -33.98423,-71.39783,
-                         -33.46370,-70.83870,
-                         -33.023636,-71.503319,
-                         -34.47399,-70.98392,
-                         -38.65667,-72.63450)
-  
-  data_sitios %>% 
-    leaflet() %>%   
-    addTiles() %>%
-    addCircles(lng = ~ lng, lat = ~ lat,
-               color = "darkgreen") 
+## Data collected
+```{r}
+curves_psd <- read.csv("data/curves_pario_sssa.csv")
+curves_swrc <- read.csv("data/curves_swrc_sssa.csv")
+```
+## Amount of data particle size distribution (n = 12)
+```{r, echo=FALSE, message=FALSE}
+curves_psd %>%
+  group_by(soil_id, treatment) %>% 
+  summarise(n = n()) %>% 
+  rmarkdown::paged_table(.,options = list(rows.print = 5))
 ```
 ---
-class: inverse
-
-## Diversidad de suelos en un largo país
-
-```{r echo = FALSE}
-knitr::include_graphics("img/field1.jpeg")
+## Amount of data soil water retention curve (n = 12)
+```{r, echo=FALSE, message=FALSE}
+curves_swrc %>%
+  group_by(soil_id,device) %>% 
+  summarise(n = n()) %>% 
+  rmarkdown::paged_table(.,options = list(rows.print = 5))
 ```
 ---
-class: inverse
+## Data collected
+.pull-left[
+### Soil<br>water retention curves
+* Full curves with 78 - 100 points
+* Number of data from dewpoint method depends on operator
+]
 
-## Diversidad de suelos en un largo país
+.pull-right[
+### Soil<br>particle size distribution
+* Standard curves with 500 points
+]
+---
+### keep data human-and-machine readable: files and variables names
+#### * Files should be named consistently
+#### * File names should be short but descriptive (<25 characters)
+#### * Avoid special characters or spaces in a file name
+#### * Use capitals and underscores instead of periods or spaces or slashes
 
-```{r echo = FALSE}
-knitr::include_graphics("img/field2png.png")
+More info in Jenny Brian's presentation: [naming things](http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf)
+---
+### keep data human-and-machine readable: columns names
+```{r}
+curves_psd %>%
+  rmarkdown::paged_table(.,options = list(rows.print = 5))
 ```
 ---
+### keep data human-and-machine readable: file names
 
-#¿Cómo obtenemos una curva?
-
-```{r echo = FALSE}
-knitr::include_graphics("img/swrc.png")
+.pull-left[
+```{r, eval = FALSE}
+files_list <- list.files(pattern = "*.xlsx",
+                         full.names = TRUE)
+df_psd_list<-
+  setNames(lapply(files_list,
+                  function(x)
+    read_excel(x,
+               sheet = 4,
+               range = "B8:F508")),
+    files_list)
 ```
+]
 
-* Nuevas metodologías que permiten curvas de alta resolución
-* Metodologías concatenadas (análisis en tandem)
-
+.pull-right[
+![files](img/files.png)
+]
 ---
-class: center
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=5}
-library(SoilHyP)
-library(ggplot2)
-library(scales)
-library(hrbrthemes)
-data(dataSHP)
-  dataSHP %>%
-    filter(suc < 0) %>% 
-    mutate(suc = -10*suc) %>% 
-    mutate(Equipo = "Evaporación") %>% 
-    add_row(th = c(0.15,0.11,0.07,0.055),
-            suc = c(8000,9000,12000,14000),
-            Equipo = rep("Punto de Rocío")) %>%
-    ggplot(aes(x=suc, y=th, color = Equipo)) +
-    geom_point(aes(group = seq_along(Equipo)))+
-    scale_x_log10(
-      breaks = trans_breaks("log10", function(x)
-        10 ^ x),
-      labels = trans_format("log10", math_format(10 ^ .x))
-    ) +
-    scale_y_continuous(breaks = seq(from = 0.05, to = 0.9, by = 0.1)) +
-    labs(title="Curva de retención de humedad",
-         subtitle="Datos del paquete {SoilHyP} + datos como ejemplo",
-         caption="elaboración propia") + 
-    theme_ipsum() +    
-    ylab("contenido volumétrico de humedad") +
-    xlab("succión (hPa)") 
+### use scripts and not touch raw data
+#### Check data of hyprop within accuracy	of 1.5 hPa (0 hPa to 820 hPa)
+```{r}
+curves_swrc %>%
+  group_by(soil_id) %>% 
+  filter(device == "sem" & suction <= 820) %>% 
+  rmarkdown::paged_table(.,options = list(rows.print = 5))
 ```
 ---
-
-background-image: url('img/program3.png')
-background-size: cover
-class: middle, center, inverse
-
-# **Programación**
-
----
-
-#Generando modelos predictivos
-
-```{r echo = FALSE}
-knitr::include_graphics("img/program2.jpeg")
+### use data validation to avoid errors
+#### Soil water content exceeding its physical plausibility range (over porosity or below 0) 
+```{r}
+curves_swrc %>%
+  group_by(soil_id) %>% 
+  filter(water_content < 0.8 & suction > 0) %>% 
+  rmarkdown::paged_table(.,options = list(rows.print = 5)) #example value
 ```
-
-* Lenguaje utilizado: R
-* Investigación basada en datos colaborativa
-
 ---
+### Conclusions
 
-#Generando modelos predictivos
+#### *Data management is crucial for reproducibility in soil science 
+#### *Naming files and variables properly can save time and information in the laboratory work
+#### *Using scripts and data validation can improve data quality and reproducibility
 
-```{r echo = FALSE}
-knitr::include_graphics("img/program.png")
-```
-
-* Análisis estadístico
-* Modelos predictivos: función de pedotransferencia (PTF)
-* Visualización de datos
-
----
-
-#ejemplo función de pedotransferencia (PTF)
-
-```{r echo = FALSE}
-knitr::include_url("https://biofisica.shinyapps.io/Borrador/",
-                   height = "350px")
-```
-
----
-
-#  Investigación reproducible
-
-* Sintáxis y manejo de datos tidy
-* Reproducibilidad de datos
-* Developer Max Kuhn {library(caret)} {library(tidymodels)}
-
-<img src=https://rviews.rstudio.com/post/2019-06-14-a-gentle-intro-to-tidymodels_files/figure-html/tidymodels.png img> 
-
-.footnote[Figura: [RStudio](https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/)]
-
----
-class: center
-
-## Mi tesis doctoral:
-
-Evaluation of machine learning algorithms for estimating soil water characteristics obtained by basic soil data in Central Chile
-
-```{r echo = FALSE,out.width='50%', fig.height=3}
-knitr::include_graphics("img/paper1.png")
-```
-
----
-class:center
-
-## Resultados generales
-
-```{r echo = FALSE,out.width='50%', fig.height=4}
-knitr::include_graphics("img/paper2.png")
-```
-.footnote[Publicación under review]
 ---
 class: goodbye-slide, inverse, middle, right
 
@@ -488,4 +338,3 @@ class: goodbye-slide, inverse, middle, right
 [@saryace `r icons::fontawesome("twitter")`](https://twitter.com/saryace)<br/>
 [@Saryace `r icons::fontawesome("github")`](https://github.com/Saryace)<br/>
 ]]
----
