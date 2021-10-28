@@ -98,7 +98,7 @@ class: middle
 
 .pull-left[
 
-*  Automated data collection overwhelms the ability of scientists to effectively manage and and analyze data (Michener et al., 1997)
+*  Automated data collection overwhelms the ability of scientists to effectively manage and analyze data (Michener et al., 1997)
 
 * Soil physics has been no exception, transforming over into a data-intensive field. 
 
